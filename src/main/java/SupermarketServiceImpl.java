@@ -203,22 +203,34 @@ public class SupermarketServiceImpl implements SupermarketService{
             double price = selectedProduct.getPrice();
             double cashSelected;
             double sumOfPay = 0;
+            int qtyOf2 = 0;
+            int qtyOf1 = 0;
+            int qtyOf05 = 0;
+            int qtyOf01 = 0;
             while (true){
                 cashSelected = sc.nextDouble();
+                if (cashSelected == 0){
+                    System.out.println("Your transaction has been canceled");
+                    qtyOf2 = 0;
+                    qtyOf1 = 0;
+                    qtyOf05 = 0;
+                    qtyOf01 = 0;
+                    break;
+                }
                 if (!checkIfCashIsAccepted(cashSelected)){
                     break;
                 }
                 if(cashSelected == 2){
-                    cashRegister.setBill2Qty(cashRegister.getBill2Qty() + 1);
+                    qtyOf2++;
                 }
                 if(cashSelected == 1){
-                    cashRegister.setBill1Qty(cashRegister.getBill1Qty() + 1);
+                    qtyOf1++;
                 }
                 if(cashSelected == 0.5){
-                    cashRegister.setBill05Qty(cashRegister.getBill05Qty() + 1);
+                    qtyOf05++;
                 }
                 if(cashSelected == 0.1){
-                    cashRegister.setBill01Qty(cashRegister.getBill01Qty() + 1);
+                    qtyOf01++;
                 }
                 sumOfPay = DoubleRounder.round(sumOfPay + cashSelected, 1);
                 if(price <= sumOfPay){
@@ -232,6 +244,10 @@ public class SupermarketServiceImpl implements SupermarketService{
                 }
                 System.out.println("You have paid " + DoubleRounder.round(cashSelected, 1) + " in total. You still need to pay " + (DoubleRounder.round(price - sumOfPay, 1)));
             }
+            cashRegister.setBill2Qty(cashRegister.getBill2Qty() + qtyOf2);
+            cashRegister.setBill1Qty(cashRegister.getBill1Qty() + qtyOf1);
+            cashRegister.setBill05Qty(cashRegister.getBill05Qty() + qtyOf05);
+            cashRegister.setBill01Qty(cashRegister.getBill01Qty() + qtyOf01);
         }
     }
 
